@@ -1,0 +1,6 @@
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\bin\Release\AuditSafe_Collector.exe
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\bin\Release\AuditSafe_Collector.pdb
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\obj\Release\AuditSafe_Collector.csproj.AssemblyReference.cache
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\obj\Release\AuditSafe_Collector.csproj.CoreCompileInputs.cache
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\obj\Release\AuditSafe_Collector.exe
+E:\AuditSafe\AuditSafe_Collector\AuditSafe_Collector\obj\Release\AuditSafe_Collector.pdb
