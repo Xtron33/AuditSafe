@@ -1,0 +1,10 @@
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\bin\Debug\AuditSafe_CS_Interface.exe.config
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\bin\Debug\AuditSafe_CS_Interface.exe
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\bin\Debug\AuditSafe_CS_Interface.pdb
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.csproj.AssemblyReference.cache
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.Properties.Resources.resources
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.csproj.GenerateResource.cache
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.csproj.CoreCompileInputs.cache
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.exe
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.pdb
+E:\AuditSafe\AuditSafe_CS_Interface\AuditSafe_CS_Interface\obj\Debug\AuditSafe_CS_Interface.Form1.resources

@@ -1,38 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Diagnostics;
 
-
-
-namespace AuditSafe_Collector
+namespace AuditSafe_CS_Interface
 {
-    class LogData
+    public partial class Form1 : Form
     {
-        public DateTime time;
-        public string pcName, userName, message, type;
-
-        public LogData(DateTime time, string pcName, string userName, string message, string type)
+        
+        class LogData
         {
-            this.time = time;
-            this.pcName = pcName;
-            this.userName = userName;
-            this.message = message;
-            this.type = type;
+            public DateTime time;
+            public string pcName, userName, message, type;
+
+            public LogData(DateTime time, string pcName, string userName, string message, string type)
+            {
+                this.time = time;
+                this.pcName = pcName;
+                this.userName = userName;
+                this.message = message;
+                this.type = type;
+            }
         }
-    }
-    
-    
-    internal class Program
-    {
-        public static void Main(string[] args)
+        
+        List<LogData> testString = new List<LogData>();
+        public Form1()
         {
-
+            InitializeComponent();
+            
             int counter_brut = 0;
             TimeSpan delta_brut = new TimeSpan(0, 0, 2);
             DateTime buf_time_brut = DateTime.Now;
             
 
-            List<LogData> testString = new List<LogData>();
+            
             
             EventLog log = new EventLog("Security");
             EventLog logApp = new EventLog("Application");
@@ -175,23 +183,51 @@ namespace AuditSafe_Collector
             void LogEntry(object source, EntryWrittenEventArgs e)
             {
                 logCheck(e.Entry);
+                UpdateTable();
             }
             void LogAppEntry(object source, EntryWrittenEventArgs e)
             {
                 logAppCheck(e.Entry);
+                UpdateTable();
             }
 
             log.EntryWritten += new EntryWrittenEventHandler(LogEntry);
             logApp.EntryWritten += new EntryWrittenEventHandler(LogAppEntry);
 
-                
-                
-            foreach (LogData strin in testString)
+                  
+        }
+
+        void UpdateTable()
+        {
+            dataGridView1.Rows.Clear();
+
+            foreach (var item in testString)
             {
-                Console.WriteLine(strin.message);
+
+                
+
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewCell Domain = new DataGridViewTextBoxCell();
+                DataGridViewCell User = new DataGridViewTextBoxCell();
+                DataGridViewCell Message = new DataGridViewTextBoxCell();
+                DataGridViewCell Date = new DataGridViewTextBoxCell();
+                DataGridViewCell Type = new DataGridViewTextBoxCell();
+
+                Domain.Value = item.pcName;
+                User.Value = item.userName;
+                Message.Value = item.message;
+                Date.Value = item.time.ToString();
+                Type.Value = item.type;
+
+                row.Cells.AddRange(Domain, User, Message, Date, Type);
+                dataGridView1.Rows.Add(row);
+
             }
-            Console.ReadLine();
-            
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            UpdateTable();
         }
     }
 }
