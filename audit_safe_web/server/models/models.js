@@ -15,3 +15,8 @@ const Data = sequelize.define('data',{
     date: {type: DataTypes.DATE},
     type: {type: DataTypes.STRING}
 })
+
+module.exports = {
+    User,
+    Data
+}

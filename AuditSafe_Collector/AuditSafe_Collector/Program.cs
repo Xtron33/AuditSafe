@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
 
 
 namespace AuditSafe_Collector
@@ -24,6 +27,7 @@ namespace AuditSafe_Collector
     
     internal class Program
     {
+        private static readonly HttpClient client = new HttpClient();
         public static void Main(string[] args)
         {
 
@@ -51,7 +55,7 @@ namespace AuditSafe_Collector
                             if (entry.TimeWritten.Hour < 8 || entry.TimeWritten.Hour > 18)//Вход в не рабочее время
                             {
                                 data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                                        "Была произведенна аунтефекация пользователя в не рабочее время", "Warning");
+                                        "Была произведенна аунтефекация пользователя в не рабочее время", "Red Alert!");
                                 testString.Add(data);
                             }
 
@@ -72,7 +76,7 @@ namespace AuditSafe_Collector
                         if (counter_brut >= 4)
                         {
                             data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                                "Была совершенна попытка брутфорса пароля", "red");
+                                "Была совершенна попытка брутфорса пароля", "Red Alert!");
                             testString.Add(data);
                         }
                             
@@ -81,26 +85,26 @@ namespace AuditSafe_Collector
                     
                     case 4720: //Создание нового пользователя
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"Был создан новый пользователь {entry.ReplacementStrings[8]}", "Ligth");
+                            $"Был создан новый пользователь {entry.ReplacementStrings[8]}", "Незначительно");
                         testString.Add(data);
                         break;
                     case 4732: //Изменение группы пользователя
                         if (entry.ReplacementStrings[2] == "Administrators")
                         {
                             data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                                $"Новый пользователь был добавлен в административную группу", "red");
+                                $"Новый пользователь был добавлен в административную группу", "Red Alert!");
                             testString.Add(data);
                         }
                         else
                         {
                             data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                                $"Новый пользователь был добавлен в локальную группу", "Warning");
+                                $"Новый пользователь был добавлен в локальную группу", "Незначительно");
                             testString.Add(data);
                         }
                         break;
                     case 4726: //Удаление пользователя
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"{entry.ReplacementStrings[0]} пользователь был удален", "warning");
+                            $"{entry.ReplacementStrings[0]} пользователь был удален", "Warning");
                         testString.Add(data);
                         break;
                     case 4724: //Попытка сброса пороля
@@ -115,12 +119,12 @@ namespace AuditSafe_Collector
                         }
                         
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"Пароль пользователя {entry.ReplacementStrings[0]} {text} пользователем {entry.ReplacementStrings[4]}", "warning");
+                            $"Пароль пользователя {entry.ReplacementStrings[0]} {text} пользователем {entry.ReplacementStrings[4]}", "Warning");
                         testString.Add(data);
                         break;
                     case 1102: //Очистка аудита
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"Журнал аудита был очищен пользователем {entry.ReplacementStrings[1]}", "red");
+                            $"Журнал аудита был очищен пользователем {entry.ReplacementStrings[1]}", "Red Alert!");
                         testString.Add(data);
                         break;
                     case 4719: //Политика аудита изменена
@@ -131,12 +135,12 @@ namespace AuditSafe_Collector
                         break;
                     case 4950:// Параметры брандмауэра изменены
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"Параметры брандмауэра изменены", "red");
+                            $"Параметры брандмауэра изменены", "Warning");
                         testString.Add(data);
                         break;
                     case 4698:
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"В планировщик задач было добавлено новая задача.", "warning");
+                            $"В планировщик задач было добавлено новая задача.", "Warning");
                         testString.Add(data);
                         break;
                 }
@@ -150,12 +154,12 @@ namespace AuditSafe_Collector
                  {
                      case 11707:
                          data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                             entry.Message, "red");
+                             entry.Message, "Red Alert!");
                          testString.Add(data);
                          break;
                      case 1034:
                          data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                             entry.Message, "red");
+                             entry.Message, "Red Alert!");
                          testString.Add(data);
                          break;
                  }
@@ -175,22 +179,59 @@ namespace AuditSafe_Collector
             void LogEntry(object source, EntryWrittenEventArgs e)
             {
                 logCheck(e.Entry);
+                UpdateData();
             }
             void LogAppEntry(object source, EntryWrittenEventArgs e)
             {
                 logAppCheck(e.Entry);
+                UpdateData();
             }
 
             log.EntryWritten += new EntryWrittenEventHandler(LogEntry);
             logApp.EntryWritten += new EntryWrittenEventHandler(LogAppEntry);
 
-                
-                
-            foreach (LogData strin in testString)
+            UpdateData();
+            
+            async void UpdateData()
             {
-                Console.WriteLine(strin.message);
+                foreach (var item in testString)
+                {
+
+                    string domain;
+                    
+                    if (item.pcName != String.Empty)
+                    {
+                        domain = item.pcName;
+                        Console.WriteLine(domain);
+                    }
+                    else
+                    {
+                        domain = "";
+                        Console.WriteLine("EMPTY");
+
+                    }
+                    
+                    Console.WriteLine(item.message);
+                    
+                    Dictionary<string, string> data = new Dictionary<string, string>
+                    {
+                        ["domain"] = domain,
+                        ["user"] = item.userName,
+                        ["message"] = item.message,
+                        ["date"] = item.time.ToString(),
+                        ["type"] = item.type
+                    };
+
+                    HttpContent content = JsonContent.Create(data);
+                    HttpResponseMessage response = await client.PostAsync("http://192.168.1.68:5000/api/data", content);
+                    string responceText = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responceText);
+
+                }
             }
+            
             Console.ReadLine();
+
             
         }
     }
