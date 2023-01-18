@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AuditSafe_CS_Interface
@@ -142,7 +135,7 @@ namespace AuditSafe_CS_Interface
                             $"Параметры брандмауэра изменены", "Опасно!");
                         testString.Add(data);
                         break;
-                    case 4698:
+                    case 4698://Изменение планировщика
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
                             $"В планировщик задач было добавлено новая задача.", "Обратите внимание!");
                         testString.Add(data);

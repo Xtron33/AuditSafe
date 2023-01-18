@@ -27,7 +27,7 @@ const MainPage = () => {
             </Typography>
 
             <Accordion disabled>
-                <AccordionSummary style={{width: 1000, backgroundColor: "black"}}
+                <AccordionSummary style={{width: 1200, backgroundColor: "black"}}
                     aria-controls="panel3a-content"
                     id="panel3a-header"
                 >
@@ -35,6 +35,7 @@ const MainPage = () => {
                         <Typography color="white" variant="h6" gutterBottom>Domain</Typography>
                         <Typography color="white" variant="h6" gutterBottom>User</Typography>
                         <Typography color="white" variant="h6" gutterBottom>Type</Typography>
+                        <Typography color="white" variant="h6" gutterBottom>Date</Typography>
                     </Stack>
                 </AccordionSummary>
             </Accordion>
