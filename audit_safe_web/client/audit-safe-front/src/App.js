@@ -22,9 +22,6 @@ function App() {
         return <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', justify: 'center', marginTop: 80}}><CircularProgress size={150}/></Box>
     }
 
-
-
-
   return (
     <Router>
       <AppRouter/>

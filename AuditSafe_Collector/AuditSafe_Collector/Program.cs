@@ -135,7 +135,7 @@ namespace AuditSafe_Collector
                         break;
                     case 4950:// Параметры брандмауэра изменены
                         data = new LogData(entry.TimeGenerated, entry.MachineName, entry.UserName,
-                            $"Параметры брандмауэра изменены", "Warning");
+                            $"Параметры брандмауэра изменены", "Red Alert!");
                         testString.Add(data);
                         break;
                     case 4698:
